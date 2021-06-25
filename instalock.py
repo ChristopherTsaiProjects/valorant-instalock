@@ -6,16 +6,19 @@ import json
 import keyboard
 import pyautogui
 import configparser
-import os
+import requests
 
 json_data = '{"agents":["Astra","Breach","Brimstone","Cypher","Jett","KAY\/O","Killjoy","Omen","Phoenix","Raze","Reyna","Sage","Skye","Sova","Viper","Yoru"],"coordinates":[[667,929],[755,929],[826,929],[921,929],[1006,929],[1086,929],[1167,929],[1245,292],[661,1013],[751,1013],[835,1013],[919,1013],[1002,1013],[1089,1013],[1173,1013],[1249,1013]],"button":[960,808]}'
 
 def load_data():
-    data = json.loads(json_data)
-
     config = configparser.ConfigParser()
     config.read("config.ini")
     config = config["Settings"]
+
+    if config["PullData"] == "no":
+        data = json.loads(json_data)
+    else:
+        data = requests.get("https://raw.githubusercontent.com/JannisMcMak/valorant-instalock/main/data.json").json()
     
     return data, config
 
