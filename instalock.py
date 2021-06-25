@@ -26,6 +26,8 @@ def load_data():
 global data, config
 data, config = load_data()
 
+app = QApplication(sys.argv)
+
 
 class Instalocker(QObject):
     finished = pyqtSignal()
@@ -39,13 +41,12 @@ class Instalocker(QObject):
     def listen(self):
         agents = data["agents"]
         for agent in agents:
-            if agent in config["DisabledAgents"].split(","):
+            if agent in config["DisabledAgents"].split(", "):
                 agents.remove(agent)
 
         while self.continue_run:
             try:
                 if keyboard.is_pressed(config["Hotkey"]):
-                    print(self.choice)
                     coords = data["coordinates"][agents.index(self.choice)]
 
                     QThread.msleep(int(float(config["DefaultDelay"]) * 100))
@@ -87,7 +88,7 @@ class App(QSystemTrayIcon):
         for agent in data["agents"]:
             action = QAction(agent, menu, checkable=True, checked=agent==config["DefaultAgent"])
             
-            action.setEnabled(agent not in config["DisabledAgents"].split(","))
+            action.setEnabled(agent not in config["DisabledAgents"].split(", "))
             menu2.addAction(action)
             agent_group.addAction(action)
 
@@ -95,7 +96,7 @@ class App(QSystemTrayIcon):
         agent_group.triggered.connect(self.onChoice)
         
         menu.addAction('Reload').triggered.connect(self.reload)
-        menu.addAction('Exit').triggered.connect(app.quit)
+        menu.addAction('Exit').triggered.connect(self.stop)
 
         self.setContextMenu(menu)
 
@@ -105,14 +106,8 @@ class App(QSystemTrayIcon):
         self.stop_signal.connect(self.worker.stop)
         self.worker.moveToThread(self.thread)
 
-        self.worker.finished.connect(self.thread.quit)
-        self.worker.finished.connect(self.worker.deleteLater)
-        self.worker.finished.connect(self.thread.deleteLater)
-
         self.thread.started.connect(self.worker.listen)
-        self.thread.finished.connect(self.worker.stop)
-
-        self.worker.finished.connect(app.quit)
+        self.worker.finished.connect(self.stop)
 
     
     def onChoice(self, action):
@@ -120,16 +115,24 @@ class App(QSystemTrayIcon):
 
     def reload(self, action):
         QCoreApplication.quit()
-        status = QProcess.startDetached(sys.executable, sys.argv)
-        print(status)
+        QProcess.startDetached(sys.executable, sys.argv)
+
+    def stop(self, action):
+        self.thread.quit()
+        self.worker.deleteLater()
+        self.thread.deleteLater()
+        self.worker.stop()
+        app.quit()
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
+def main():
     w = App()
 
     w.thread.start()
 
-
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    main()
+    
 
