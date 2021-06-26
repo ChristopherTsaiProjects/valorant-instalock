@@ -45,23 +45,20 @@ class Instalocker(QObject):
                 agents.remove(agent)
 
         while self.continue_run:
-            try:
-                if keyboard.is_pressed(config["Hotkey"]):
-                    coords = data["coordinates"][agents.index(self.choice)]
+            if keyboard.is_pressed(config["Hotkey"]):
+                coords = data["coordinates"][agents.index(self.choice)]
 
-                    QThread.msleep(int(float(config["DefaultDelay"]) * 100))
-                    pyautogui.moveTo(coords[0], coords[1])
-                    QThread.msleep(int(float(config["DefaultDelay"]) * 100))
-                    pyautogui.click()
-                    QThread.msleep(int(float(config["DefaultDelay"]) * 100))
-                    pyautogui.moveTo(data["button"][0], data["button"][1])
-                    QThread.msleep(int(float(config["DefaultDelay"]) * 100))
-                    pyautogui.click()
+                pyautogui.moveTo(coords[0], coords[1])
+                pyautogui.click()
+                pyautogui.click()
+                QThread.msleep(int(float(config["DefaultDelay"]) * 100))
+                pyautogui.moveTo(data["button"][0], data["button"][1])
+                pyautogui.click()
+                pyautogui.click()
 
-                    if config["AutoClose"] == "yes":
-                        break
-            except:
-                    continue
+                if config["AutoClose"] == "yes":
+                    break
+
 
         self.finished.emit()
 
