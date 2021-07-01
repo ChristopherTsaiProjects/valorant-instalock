@@ -4,8 +4,7 @@ Instalock script for Valorant agent select.
 
 ![](https://github.com/JannisMcMak/valorant-instalock/blob/main/logo/logo180.png?raw=true)
 
-![](https://img.shields.io/badge/release-v0.1-orange)
-
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/JannisMcMak/valorant-instalock)
 
 
 
