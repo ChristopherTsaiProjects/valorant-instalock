@@ -21,7 +21,7 @@ The default settings can be adjusted in `config.ini`. Save the file and reload t
 - `DefaultDelay` - Delay between mouse clicks/movement (`0.4` seems to be the minimum from my testing)
 
 - `AutoClose` - When enabled, the application will close after first hotkey press to eliminate input lag in-game
-- `PullData` - When enabled, coordinate and agent data will be pulled from the internet
+- `PullData` - When enabled, coordinate and agent data will be pulled from github
 
 - `DefaultAgent` - Chosen agent by default
 - `DisabledAgents` - List of agents that are not yet unlocked in-game (comma-separated)
