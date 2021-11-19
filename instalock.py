@@ -8,7 +8,7 @@ import pyautogui
 import configparser
 import requests
 
-json_data = '{"agents":["Astra","Breach","Brimstone","Cypher","Jett","KAY\/O","Killjoy","Omen","Phoenix","Raze","Reyna","Sage","Skye","Sova","Viper","Yoru"],"coordinates":[[667,929],[755,929],[826,929],[921,929],[1006,929],[1086,929],[1167,929],[1245,292],[661,1013],[751,1013],[835,1013],[919,1013],[1002,1013],[1089,1013],[1173,1013],[1249,1013]],"button":[960,808]}'
+json_data = '{"agents":["Astra","Breach","Brimstone","Chamber","Cypher","Jett","KAY\/O","Killjoy","Omen","Phoenix","Raze","Reyna","Sage","Skye","Sova","Viper","Yoru"],"coordinates":[[625,929],[709,929],[793,929],[877,929],[961,929],[1045,929],[1129,929],[1213,929],[1297,929],[625,1013],[709,1013],[793,1013],[877,1013],[961,1013],[1045,1013],[1129,1013],[1213,1013]],"button":[960,808]}'
 
 def load_data():
     config = configparser.ConfigParser()

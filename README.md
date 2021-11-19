@@ -19,7 +19,7 @@ Run the executable and press the hotkey (default: `F1`) to lock in agent. You ca
 The default settings can be adjusted in `config.ini`. Save the file and reload the application to apply changes.
 
 - `Hotkey`
-- `DefaultDelay` - Delay between mouse clicks/movement (`0.4` seems to be the minimum from my testing)
+- `Delay` - Delay between mouse clicks/movement (`0.4` seems to be the minimum from my testing)
 
 - `AutoClose` - When enabled, the application will close after first hotkey press to eliminate input lag in-game
 - `PullData` - When enabled, coordinate and agent data will be pulled from the internet
@@ -27,5 +27,8 @@ The default settings can be adjusted in `config.ini`. Save the file and reload t
 - `DefaultAgent` - Chosen agent by default
 - `DisabledAgents` - List of agents that are not yet unlocked in-game (comma-separated)
 
-
-
+## Build
+Build yourself with [PyInstaller](http://www.pyinstaller.org/).
+```
+pyinstaller -F --paths=<your_path>\Lib\site-packages --noconsole --icon=logo.ico instalock.py
+```
