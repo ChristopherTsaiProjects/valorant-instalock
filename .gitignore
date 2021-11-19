@@ -4,3 +4,4 @@ dist
 *.spec
 __pycache__
 logo.ico
+agent_select.png
