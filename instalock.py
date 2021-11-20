@@ -8,7 +8,7 @@ import pyautogui
 import configparser
 import requests
 
-json_data = '{"agents":["Astra","Breach","Brimstone","Chamber","Cypher","Jett","KAY\/O","Killjoy","Omen","Phoenix","Raze","Reyna","Sage","Skye","Sova","Viper","Yoru"],"coordinates":[[625,929],[709,929],[793,929],[877,929],[961,929],[1045,929],[1129,929],[1213,929],[1297,929],[625,1013],[709,1013],[793,1013],[877,1013],[961,1013],[1045,1013],[1129,1013],[1213,1013]],"button":[960,808]}'
+json_data = '{"agents":["Astra","Breach","Brimstone","Chamber","Cypher","Jett","KAY\/O","Killjoy","Omen","Phoenix","Raze","Reyna","Sage","Skye","Sova","Viper","Yoru"],"coordinates":[[0.3255208333333333,0.8601851851851852],[0.3692708333333333,0.8601851851851852],[0.41302083333333334,0.8601851851851852],[0.45677083333333335,0.8601851851851852],[0.5005208333333333,0.8601851851851852],[0.5442708333333334,0.8601851851851852],[0.5880208333333333,0.8601851851851852],[0.6317708333333333,0.8601851851851852],[0.6755208333333333,0.8601851851851852],[0.3255208333333333,0.937962962962963],[0.3692708333333333,0.937962962962963],[0.41302083333333334,0.937962962962963],[0.45677083333333335,0.937962962962963],[0.5005208333333333,0.937962962962963],[0.5442708333333334,0.937962962962963],[0.5880208333333333,0.937962962962963],[0.6317708333333333,0.937962962962963]],"button":[0.5,0.7481481481481481]}'
 
 def load_data():
     config = configparser.ConfigParser()
@@ -53,10 +53,7 @@ class Instalocker(QObject):
 
     def listen(self):            
         with keyboard.Listener(on_press=self.on_press) as listener:
-            print("Listening...")
             listener.join()
-
-        print("Finished listening...")
 
     def load_agent_list(self):
         agents = data["agents"]
@@ -68,11 +65,14 @@ class Instalocker(QObject):
     def lock_in(self):
         coords = data["coordinates"][self.agents.index(self.choice)]
 
-        pyautogui.moveTo(coords[0], coords[1])
+        sx = int(config["ScreenX"])
+        sy = int(config["ScreenY"])
+
+        pyautogui.moveTo(coords[0] * sx, coords[1] * sy)
         pyautogui.click()
         pyautogui.click()
         QThread.msleep(int(float(config["Delay"]) * 100))
-        pyautogui.moveTo(data["button"][0], data["button"][1])
+        pyautogui.moveTo(int(data["button"][0] * sx), int(data["button"][1] * sy))
         pyautogui.click()
         pyautogui.click()
 
@@ -105,9 +105,9 @@ class App(QSystemTrayIcon):
             agent_group.addAction(action)
 
         agent_group.setExclusive(True)
-        agent_group.triggered.connect(self.onChoice)
+        agent_group.triggered.connect(self.on_choice)
         
-        menu.addAction('Reload').triggered.connect(self.reload)
+        menu.addAction('Reload').triggered.connect(self.on_reload)
         menu.addAction('Exit').triggered.connect(self.stop)
 
         self.setContextMenu(menu)
@@ -122,10 +122,10 @@ class App(QSystemTrayIcon):
         self.worker.finished.connect(self.stop)
 
     
-    def onChoice(self, action):
+    def on_choice(self, action):
         self.worker.choice = action.text()
 
-    def reload(self, action):
+    def on_reload(self, action):
         QCoreApplication.quit()
         QProcess.startDetached(sys.executable, sys.argv)
 
