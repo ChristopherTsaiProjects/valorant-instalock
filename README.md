@@ -9,7 +9,8 @@ Instalock script for Valorant agent select.
 
 
 ## Installation
-Download the [latest release](https://github.com/JannisMcMak/valorant-instalock/releases/latest) and extract the archive. Make sure `config.ini` and the logo folder are in the same directory.
+Download the [latest release](https://github.com/JannisMcMak/valorant-instalock/releases/latest) and extract the archive. Make sure `config.ini` and the folder `logo` are in the same directory as the executable.
+
 Open the config file and adjust the settings.
 
 ## Usage
@@ -19,15 +20,14 @@ Run the executable and press the hotkey (default: `F1`) to lock in agent. You ca
 The default settings can be adjusted in `config.ini`. Save the file and reload the application to apply changes.
 
 - `Hotkey`
-- `Delay` - Delay between mouse clicks/movement (`0.4` seems to be the minimum from my testing)
+- `ScreenX, ScreenY` - Your screen resolution
+- `DefaultAgent` - Chosen agent by default
+- `DisabledAgents` - List of agents that are not yet unlocked in-game (comma-separated)
+
+- `Delay` - Delay (in ms) between mouse clicks/movement (`0.4` seems to be the minimum from my testing)
 
 - `AutoClose` - When enabled, the application will close after first hotkey press
 - `PullData` - When enabled, coordinate and agent data will be pulled from github
-
-- `ScreenX, ScreenY` - Your screen resolution
-
-- `DefaultAgent` - Chosen agent by default
-- `DisabledAgents` - List of agents that are not yet unlocked in-game (comma-separated)
 
 ## Build
 Build yourself with [PyInstaller](http://www.pyinstaller.org/).
