@@ -42,9 +42,14 @@ class Instalocker(QObject):
     def on_press(self, key):
         try:
             if str(key).split(".")[1] == config["Hotkey"].lower():
-                print("asdf")
+                self.lock_in()
+                if config["AutoClose"] == "yes":
+                    self.finished.emit()
+                    self.stop()
+
         except:
             return
+
 
     def listen(self):            
         with keyboard.Listener(on_press=self.on_press) as listener:
@@ -52,7 +57,6 @@ class Instalocker(QObject):
             listener.join()
 
         print("Finished listening...")
-        self.finished.emit()
 
     def load_agent_list(self):
         agents = data["agents"]
@@ -67,7 +71,7 @@ class Instalocker(QObject):
         pyautogui.moveTo(coords[0], coords[1])
         pyautogui.click()
         pyautogui.click()
-        QThread.msleep(int(float(config["DefaultDelay"]) * 100))
+        QThread.msleep(int(float(config["Delay"]) * 100))
         pyautogui.moveTo(data["button"][0], data["button"][1])
         pyautogui.click()
         pyautogui.click()
