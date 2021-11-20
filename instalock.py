@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QAction, QActi
 from PyQt5.QtGui import QIcon
 import sys
 import json
-import keyboard
+from pynput import keyboard
 import pyautogui
 import configparser
 import requests
@@ -36,31 +36,42 @@ class Instalocker(QObject):
         QObject.__init__(self, parent=parent)
         self.continue_run = True
         
+        self.agents = self.load_agent_list()
         self.choice = config["DefaultAgent"]
 
-    def listen(self):
+    def on_press(self, key):
+        try:
+            if str(key).split(".")[1] == config["Hotkey"].lower():
+                print("asdf")
+        except:
+            return
+
+    def listen(self):            
+        with keyboard.Listener(on_press=self.on_press) as listener:
+            print("Listening...")
+            listener.join()
+
+        print("Finished listening...")
+        self.finished.emit()
+
+    def load_agent_list(self):
         agents = data["agents"]
         for agent in agents:
             if agent in config["DisabledAgents"].split(", "):
-                agents.remove(agent)
+                agents.remove(agent)   
+        return agents
 
-        while self.continue_run:
-            if keyboard.is_pressed(config["Hotkey"]):
-                coords = data["coordinates"][agents.index(self.choice)]
+    def lock_in(self):
+        coords = data["coordinates"][self.agents.index(self.choice)]
 
-                pyautogui.moveTo(coords[0], coords[1])
-                pyautogui.click()
-                pyautogui.click()
-                QThread.msleep(int(float(config["DefaultDelay"]) * 100))
-                pyautogui.moveTo(data["button"][0], data["button"][1])
-                pyautogui.click()
-                pyautogui.click()
+        pyautogui.moveTo(coords[0], coords[1])
+        pyautogui.click()
+        pyautogui.click()
+        QThread.msleep(int(float(config["DefaultDelay"]) * 100))
+        pyautogui.moveTo(data["button"][0], data["button"][1])
+        pyautogui.click()
+        pyautogui.click()
 
-                if config["AutoClose"] == "yes":
-                    break
-
-
-        self.finished.emit()
 
     def stop(self):
         self.continue_run = False
@@ -116,9 +127,9 @@ class App(QSystemTrayIcon):
 
     def stop(self, action):
         self.thread.quit()
+        self.worker.stop()
         self.worker.deleteLater()
         self.thread.deleteLater()
-        self.worker.stop()
         app.quit()
 
 
