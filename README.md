@@ -16,6 +16,8 @@ Open the config file and adjust the settings.
 ## Usage
 Run the executable and press the hotkey (default: `F1`) to lock in agent. You can choose the agent via the system tray icon.
 
+If you get a popup saying that Windows Defender protected your PC, just click `More info` and `Run Anyway`.
+
 ## Config 
 The default settings can be adjusted in `config.ini`. Save the file and reload the application to apply changes.
 
