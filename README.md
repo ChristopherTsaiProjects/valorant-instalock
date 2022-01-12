@@ -23,7 +23,7 @@ The default settings can be adjusted in `config.ini`. Save the file and reload t
 
 - `Hotkey`
 - `ScreenX, ScreenY` - Your screen resolution
-- `DefaultAgent` - Chosen agent by default
+- `DefaultAgent` - Selected agent by default
 - `DisabledAgents` - List of agents that are not yet unlocked in-game (comma-separated)
 
 - `Delay` - Delay (in ms) between mouse clicks/movement (`0.4` seems to be the minimum from my testing)
